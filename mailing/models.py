@@ -71,6 +71,13 @@ class Mailing(models.Model):
             self.status = "completed"
             self.save()
 
+    def get_stats(self):
+        return {
+            'success': self.attempts.filter(status='success').count(),
+            'failed': self.attempts.filter(status='failed').count(),
+            'total': self.attempts.count()
+        }
+
 
 class MailingAttempt(models.Model):
     STATUS_CHOICES = [
@@ -85,3 +92,5 @@ class MailingAttempt(models.Model):
 
     def __str__(self):
         return f"Попытка {self.id} ({self.get_status_display()})"
+
+
