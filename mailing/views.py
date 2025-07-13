@@ -1,7 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from django.views.generic import UpdateView
+
 from mailing.models import Mailing
 from django.contrib import messages
+from .mixins import OwnerRequiredMixin
 
 
 def send_mailing_view(request, mailing_id):
@@ -15,3 +18,7 @@ def stats(request):
     mailings = Mailing.objects.filter(owner=request.user)
     stats = [m.get_stats() for m in mailings]
     return render(request, 'mailing/stats.html', {'stats': stats})
+
+class MailingUpdateView(OwnerRequiredMixin, UpdateView):
+    model = Mailing
+    fields = ['start_time', 'end_time']

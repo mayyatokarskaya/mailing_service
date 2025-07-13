@@ -5,6 +5,7 @@ from django.utils.html import format_html
 from django.urls import reverse
 
 from .models import Recipient, Message, Mailing, MailingAttempt
+from django.contrib.auth.models import Group, Permission
 
 
 @admin.register(Recipient)
@@ -69,3 +70,11 @@ class MailingAttemptAdmin(admin.ModelAdmin):
     list_filter = ("status", "attempt_time")
     readonly_fields = ("attempt_time", "status", "server_response", "mailing")
     search_fields = ("mailing__message__subject",)
+
+
+def setup_groups():
+    manager_group, _ = Group.objects.get_or_create(name='Managers')
+    permissions = Permission.objects.filter(
+        codename__in=['view_mailing', 'view_recipient']
+    )
+    manager_group.permissions.set(permissions)
