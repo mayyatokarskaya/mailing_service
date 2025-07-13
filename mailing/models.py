@@ -1,7 +1,6 @@
 from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
-from django.template.loader import render_to_string
 
 
 class Recipient(models.Model):
@@ -23,21 +22,16 @@ class Message(models.Model):
 
 class Mailing(models.Model):
     STATUS_CHOICES = [
-        ('completed', 'Завершена'),
-        ('created', 'Создана'),
-        ('started', 'Запущена'),
+        ("completed", "Завершена"),
+        ("created", "Создана"),
+        ("started", "Запущена"),
     ]
 
     start_time = models.DateTimeField(verbose_name="Время начала")
     end_time = models.DateTimeField(verbose_name="Время окончания")
-    status = models.CharField(
-        max_length=10,
-        choices=STATUS_CHOICES,
-        default='created',
-        verbose_name="Статус"
-    )
-    message = models.ForeignKey('Message', on_delete=models.CASCADE, verbose_name="Сообщение")
-    recipients = models.ManyToManyField('Recipient', verbose_name="Получатели")
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="created", verbose_name="Статус")
+    message = models.ForeignKey("Message", on_delete=models.CASCADE, verbose_name="Сообщение")
+    recipients = models.ManyToManyField("Recipient", verbose_name="Получатели")
 
     def __str__(self):
         return f"Рассылка {self.id} ({self.get_status_display()})"
@@ -46,18 +40,18 @@ class Mailing(models.Model):
         """Автоматически обновляет статус при сохранении."""
         now = timezone.now()
 
-        if self.status != 'completed' and now > self.end_time:
-            self.status = 'completed'
+        if self.status != "completed" and now > self.end_time:
+            self.status = "completed"
 
-        if self.status == 'created' and now >= self.start_time and now <= self.end_time:
-            self.status = 'started'
+        if self.status == "created" and now >= self.start_time and now <= self.end_time:
+            self.status = "started"
 
         super().save(*args, **kwargs)
 
     def send_to_recipients(self):
         """Отправляет письма всем получателям рассылки."""
-        if self.status != 'started':
-            self.status = 'started'
+        if self.status != "started":
+            self.status = "started"
             self.save()
 
         for recipient in self.recipients.all():
@@ -65,31 +59,23 @@ class Mailing(models.Model):
                 send_mail(
                     subject=self.message.subject,
                     message=self.message.body,
-                    from_email='noreply@yourdomain.com',
+                    from_email="noreply@yourdomain.com",
                     recipient_list=[recipient.email],
                     fail_silently=False,
                 )
-                MailingAttempt.objects.create(
-                    mailing=self,
-                    status='success',
-                    server_response='200 OK'
-                )
+                MailingAttempt.objects.create(mailing=self, status="success", server_response="200 OK")
             except Exception as e:
-                MailingAttempt.objects.create(
-                    mailing=self,
-                    status='failed',
-                    server_response=str(e)
-                )
+                MailingAttempt.objects.create(mailing=self, status="failed", server_response=str(e))
 
         if timezone.now() > self.end_time:
-            self.status = 'completed'
+            self.status = "completed"
             self.save()
 
 
 class MailingAttempt(models.Model):
     STATUS_CHOICES = [
-        ('success', 'Успешно'),
-        ('failed', 'Не успешно'),
+        ("success", "Успешно"),
+        ("failed", "Не успешно"),
     ]
 
     attempt_time = models.DateTimeField(auto_now_add=True)

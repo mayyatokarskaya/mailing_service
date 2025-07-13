@@ -4,7 +4,7 @@ from django.utils import timezone
 
 
 class Command(BaseCommand):
-    help = 'Отправляет все активные рассылки'
+    help = "Отправляет все активные рассылки"
 
     def handle(self, *args, **options):
         now = timezone.now()
@@ -12,11 +12,7 @@ class Command(BaseCommand):
         # рассылки, которые нужно отправить:
         # - статус 'started' или 'created'
         # - текущее время между start_time и end_time
-        mailings = Mailing.objects.filter(
-            status__in=['created', 'started'],
-            start_time__lte=now,
-            end_time__gte=now
-        )
+        mailings = Mailing.objects.filter(status__in=["created", "started"], start_time__lte=now, end_time__gte=now)
 
         for mailing in mailings:
             self.stdout.write(f"Отправка рассылки #{mailing.id}...")
