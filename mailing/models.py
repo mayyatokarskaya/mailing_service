@@ -1,3 +1,4 @@
+import self
 from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
@@ -38,15 +39,19 @@ class Mailing(models.Model):
 
     def save(self, *args, **kwargs):
         """Автоматически обновляет статус при сохранении."""
-        now = timezone.now()
 
-        if self.status != "completed" and now > self.end_time:
-            self.status = "completed"
+        if self.start_time >= self.end_time:
+            raise ValueError("Дата и время начала должны быть раньше даты и времени окончания.")
 
-        if self.status == "created" and now >= self.start_time and now <= self.end_time:
-            self.status = "started"
+            now = timezone.now()
 
-        super().save(*args, **kwargs)
+            if self.status != "completed" and now > self.end_time:
+                self.status = "completed"
+
+            if self.status == "created" and now >= self.start_time and now <= self.end_time:
+                self.status = "started"
+
+            super().save(*args, **kwargs)
 
     def send_to_recipients(self):
         """Отправляет письма всем получателям рассылки."""
@@ -92,5 +97,3 @@ class MailingAttempt(models.Model):
 
     def __str__(self):
         return f"Попытка {self.id} ({self.get_status_display()})"
-
-
