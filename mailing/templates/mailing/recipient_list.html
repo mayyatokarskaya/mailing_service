@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список получателей</title>
+</head>
+<body>
+<h1>Список получателей</h1>
+
+<a href="{% url 'recipient_create' %}">Добавить получателя</a>
+
+<ul>
+    {% for recipient in recipients %}
+        <li>
+            {{ recipient.full_name }} ({{ recipient.email }})
+            - <a href="{% url 'recipient_detail' recipient.id %}">Подробнее</a>
+            - <a href="{% url 'recipient_update' recipient.id %}">Редактировать</a>
+            - <a href="{% url 'recipient_delete' recipient.id %}">Удалить</a>
+        </li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>

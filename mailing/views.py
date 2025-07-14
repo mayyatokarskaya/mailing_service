@@ -7,6 +7,10 @@ from mailing.models import Mailing, Recipient
 from django.contrib import messages
 from .mixins import OwnerRequiredMixin
 
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from .models import Recipient
+
 
 def send_mailing_view(request, mailing_id):
     mailing = Mailing.objects.get(id=mailing_id)
@@ -43,3 +47,35 @@ def home(request):
         'active_mailings': active_mailings,
         'unique_recipients': unique_recipients
     })
+
+
+class RecipientListView(ListView):
+    model = Recipient
+    template_name = 'mailing/recipient_list.html'
+    context_object_name = 'recipients'
+
+
+class RecipientDetailView(DetailView):
+    model = Recipient
+    template_name = 'mailing/recipient_detail.html'
+    context_object_name = 'recipient'
+
+
+class RecipientCreateView(CreateView):
+    model = Recipient
+    template_name = 'mailing/recipient_form.html'
+    fields = ['email', 'full_name', 'comment']
+    success_url = reverse_lazy('recipient_list')
+
+
+class RecipientUpdateView(UpdateView):
+    model = Recipient
+    template_name = 'mailing/recipient_form.html'
+    fields = ['email', 'full_name', 'comment']
+    success_url = reverse_lazy('recipient_list')
+
+
+class RecipientDeleteView(DeleteView):
+    model = Recipient
+    template_name = 'mailing/recipient_confirm_delete.html'
+    success_url = reverse_lazy('recipient_list')

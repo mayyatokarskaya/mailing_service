@@ -2,10 +2,19 @@ from django.contrib import admin
 from django.urls import path, include
 from mailing.views import send_mailing_view
 from mailing.views import home
+from mailing.views import (
+    RecipientListView, RecipientDetailView,
+    RecipientCreateView, RecipientUpdateView, RecipientDeleteView
+)
 
 urlpatterns = [
     path('', home, name='home'),
     path("admin/mailing/mailing/<int:mailing_id>/send/", send_mailing_view, name="send_mailing"),
     path("admin/", admin.site.urls),
     path('accounts/', include('users.urls')),
+    path('recipients/', RecipientListView.as_view(), name='recipient_list'),
+    path('recipients/<int:pk>/', RecipientDetailView.as_view(), name='recipient_detail'),
+    path('recipients/create/', RecipientCreateView.as_view(), name='recipient_create'),
+    path('recipients/<int:pk>/update/', RecipientUpdateView.as_view(), name='recipient_update'),
+    path('recipients/<int:pk>/delete/', RecipientDeleteView.as_view(), name='recipient_delete'),
 ]
