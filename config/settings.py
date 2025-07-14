@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "mailing.apps.MailingConfig",
     "crispy_forms",
-    'users.apps.UsersConfig'
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
