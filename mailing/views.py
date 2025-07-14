@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.cache import cache_page
 from django.views.generic import UpdateView
 
-from mailing.models import Mailing
+from mailing.models import Mailing, Recipient
 from django.contrib import messages
 from .mixins import OwnerRequiredMixin
 
@@ -31,3 +31,15 @@ class MailingUpdateView(OwnerRequiredMixin, UpdateView):
 def mailing_list(request):
     mailings = Mailing.objects.all()
     return render(request, 'mailing/list.html', {'mailings': mailings})
+
+
+def home(request):
+    total_mailings = Mailing.objects.count()  # всего рассылок
+    active_mailings = Mailing.objects.filter(status='started').count()  # активных рассылок
+    unique_recipients = Recipient.objects.count()  # всего получателей
+
+    return render(request, 'mailing/home.html', {
+        'total_mailings': total_mailings,
+        'active_mailings': active_mailings,
+        'unique_recipients': unique_recipients
+    })
