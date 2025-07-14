@@ -121,3 +121,14 @@ CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'home'
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+    }
+}
+
+# Кеширование на 15 минут
+CACHE_MIDDLEWARE_SECONDS = 900
