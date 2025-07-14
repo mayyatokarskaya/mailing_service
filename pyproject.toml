@@ -13,6 +13,7 @@ django-crispy-forms = "^2.4"
 celery = "^5.5.3"
 psycopg2-binary = "^2.9.10"
 redis = "^6.2.0"
+django-allauth = "^65.10.0"
 
 
 [tool.poetry.group.lint.dependencies]
