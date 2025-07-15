@@ -1,20 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Редактирование получателей</title>
-</head>
-<body>
+{% extends 'mailing/base.html' %}
+
+{% block title %}Форма получателя{% endblock %}
+
+{% block content %}
 <h1>{% if object %}Редактировать{% else %}Создать{% endif %} получателя</h1>
 
-<form method="post">
+<form method="post" class="mb-3">
     {% csrf_token %}
     {{ form.as_p }}
-
-    <button type="submit">Сохранить</button>
+    <button type="submit" class="btn btn-success">Сохранить</button>
 </form>
 
-<p><a href="{% url 'recipient_list' %}">Назад к списку</a></p>
-
-</body>
-</html>
+<a href="{% url 'recipient_list' %}" class="btn btn-secondary">Назад к списку</a>
+{% endblock %}

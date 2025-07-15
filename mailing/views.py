@@ -19,6 +19,20 @@ def send_mailing_view(request, mailing_id):
     return redirect("admin:mailing_mailing_changelist")
 
 
+def home(request):
+    total_mailings = Mailing.objects.count()
+    active_mailings = Mailing.objects.filter(status='started').count()
+    unique_recipients = Recipient.objects.count()
+
+    context = {
+        'total_mailings': total_mailings,
+        'active_mailings': active_mailings,
+        'unique_recipients': unique_recipients
+    }
+
+    return render(request, 'mailing/home.html', context)
+
+
 @login_required
 def stats(request):
     mailings = Mailing.objects.filter(owner=request.user)
@@ -34,7 +48,7 @@ class MailingUpdateView(OwnerRequiredMixin, UpdateView):
 @cache_page(60 * 15)
 def mailing_list(request):
     mailings = Mailing.objects.all()
-    return render(request, 'mailing/list.html', {'mailings': mailings})
+    return render(request, 'mailing/mailing_list.html', {'mailings': mailings})
 
 
 def home(request):
