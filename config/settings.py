@@ -47,7 +47,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -122,7 +122,7 @@ CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 
 AUTH_USER_MODEL = 'users.CustomUser'
-LOGIN_REDIRECT_URL = 'dashboard'
+LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 
@@ -136,10 +136,14 @@ CACHES = {
 # Кеширование на 15 минут
 CACHE_MIDDLEWARE_SECONDS = 900
 
-EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.yandex.ru"
 EMAIL_PORT = 465
+EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-DEFAULT_FROM_EMAIL = 'test.test.Django@yandex.com'
+EMAIL_HOST_USER = "test.test.Django@yandex.com"
+EMAIL_HOST_PASSWORD = "hyofjzzgzpcyrktl"
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'

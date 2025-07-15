@@ -20,4 +20,5 @@ urlpatterns = [
     path('recipients/<int:pk>/update/', RecipientUpdateView.as_view(), name='recipient_update'),
     path('recipients/<int:pk>/delete/', RecipientDeleteView.as_view(), name='recipient_delete'),
     path('mailings/', views.mailing_list, name='mailing_list'),
+    path('users/', include('users.urls')),
 ]
