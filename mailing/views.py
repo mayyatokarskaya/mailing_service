@@ -102,3 +102,45 @@ class ManagerRecipientListView(LoginRequiredMixin, UserPassesTestMixin, ListView
 
     def test_func(self):
         return self.request.user.groups.filter(name='manager').exists()
+
+
+class MailingListView(LoginRequiredMixin, ListView):
+    model = Mailing
+    template_name = 'mailing/mailing_list.html'
+    context_object_name = 'mailings'
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.groups.filter(name='manager').exists() or user.is_superuser:
+            return Mailing.objects.all()
+        return Mailing.objects.filter(owner=user)
+
+
+class MailingDetailView(LoginRequiredMixin, DetailView):
+    model = Mailing
+    template_name = 'mailing/mailing_detail.html'
+    context_object_name = 'mailing'
+
+
+class MailingCreateView(LoginRequiredMixin, CreateView):
+    model = Mailing
+    fields = ['start_time', 'end_time', 'message', 'recipients']
+    template_name = 'mailing/mailing_form.html'
+    success_url = reverse_lazy('mailing_list')
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+
+class MailingUpdateView(LoginRequiredMixin, OwnerRequiredMixin, UpdateView):
+    model = Mailing
+    fields = ['start_time', 'end_time', 'message', 'recipients']
+    template_name = 'mailing/mailing_form.html'
+    success_url = reverse_lazy('mailing_list')
+
+
+class MailingDeleteView(LoginRequiredMixin, OwnerRequiredMixin, DeleteView):
+    model = Mailing
+    template_name = 'mailing/mailing_confirm_delete.html'
+    success_url = reverse_lazy('mailing_list')

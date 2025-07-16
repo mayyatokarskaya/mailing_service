@@ -145,6 +145,7 @@ EMAIL_HOST_USER = "test.test.Django@yandex.com"
 EMAIL_HOST_PASSWORD = "hyofjzzgzpcyrktl"
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-ACCOUNT_EMAIL_REQUIRED = True
+
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_LOGIN_METHODS = ['email', 'username']
+ACCOUNT_SIGNUP_FIELDS = ['email', 'username', 'password1', 'password2']
