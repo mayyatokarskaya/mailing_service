@@ -43,15 +43,15 @@ class Mailing(models.Model):
         if self.start_time >= self.end_time:
             raise ValueError("Дата и время начала должны быть раньше даты и времени окончания.")
 
-            now = timezone.now()
+        now = timezone.now()
 
-            if self.status != "completed" and now > self.end_time:
-                self.status = "completed"
+        if self.status != "completed" and now > self.end_time:
+            self.status = "completed"
 
-            if self.status == "created" and now >= self.start_time and now <= self.end_time:
-                self.status = "started"
+        if self.status == "created" and self.start_time <= now <= self.end_time:
+            self.status = "started"
 
-            super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def send_to_recipients(self):
         """Отправляет письма всем получателям рассылки."""
