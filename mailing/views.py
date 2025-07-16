@@ -177,4 +177,55 @@ class MailingDeleteView(LoginRequiredMixin, OwnerRequiredMixin, DeleteView):
     success_url = reverse_lazy('mailing_list')
 
 
+class MessageListView(LoginRequiredMixin, ListView):
+    model = Message
+    template_name = 'mailing/message_list.html'
+    context_object_name = 'messages'
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.groups.filter(name='manager').exists() or user.is_superuser:
+            return Message.objects.all()
+        return Message.objects.filter(owner=user)
+
+
+class MessageDetailView(LoginRequiredMixin, DetailView):
+    model = Message
+    template_name = 'mailing/message_detail.html'
+    context_object_name = 'message'
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.groups.filter(name='manager').exists() or user.is_superuser:
+            return Message.objects.all()
+        return Message.objects.filter(owner=user)
+
+
+class MessageCreateView(LoginRequiredMixin, CreateView):
+    model = Message
+    fields = ['subject', 'body']
+    template_name = 'mailing/message_form.html'
+    success_url = reverse_lazy('message_list')
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
+
+class MessageUpdateView(LoginRequiredMixin, UpdateView):
+    model = Message
+    fields = ['subject', 'body']
+    template_name = 'mailing/message_form.html'
+    success_url = reverse_lazy('message_list')
+
+    def get_queryset(self):
+        return Message.objects.filter(owner=self.request.user)
+
+
+class MessageDeleteView(LoginRequiredMixin, DeleteView):
+    model = Message
+    template_name = 'mailing/message_confirm_delete.html'
+    success_url = reverse_lazy('message_list')
+
+    def get_queryset(self):
+        return Message.objects.filter(owner=self.request.user)
