@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Все получатели{% endblock %}
+
+{% block content %}
+<h2>Все получатели (только для менеджера)</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>ФИО</th>
+            <th>Комментарий</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for recipient in recipients %}
+        <tr>
+            <td>{{ recipient.email }}</td>
+            <td>{{ recipient.full_name }}</td>
+            <td>{{ recipient.comment }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

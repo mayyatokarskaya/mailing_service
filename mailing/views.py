@@ -1,9 +1,9 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect, render
 from django.views.decorators.cache import cache_page
-from django.views.generic import UpdateView
 
-from mailing.models import Mailing, Recipient
+from mailing.models import Mailing
 from django.contrib import messages
 from .mixins import OwnerRequiredMixin
 
@@ -93,3 +93,12 @@ class RecipientDeleteView(DeleteView):
     model = Recipient
     template_name = 'mailing/recipient_confirm_delete.html'
     success_url = reverse_lazy('recipient_list')
+
+
+class ManagerRecipientListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = Recipient
+    template_name = 'mailing/manager_recipient_list.html'  # укажем шаблон
+    context_object_name = 'recipients'
+
+    def test_func(self):
+        return self.request.user.groups.filter(name='manager').exists()

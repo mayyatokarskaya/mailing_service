@@ -24,6 +24,9 @@
                 <a class="btn btn-success ms-3" href="{% url 'login' %}">Войти</a>
                 <a class="btn btn-primary ms-2" href="{% url 'register' %}">Регистрация</a>
             {% endif %}
+            {% if user.is_staff %}
+    <a class="btn btn-outline-warning ms-2" href="{% url 'manager_recipient_list' %}">Все получатели</a>
+{% endif %}
         </div>
     </div>
 </nav>

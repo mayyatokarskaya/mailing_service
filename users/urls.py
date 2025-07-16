@@ -1,7 +1,8 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
-from .views import VerifiedLoginView
+from .views import VerifiedLoginView, UserListView, toggle_block_user
+
 
 urlpatterns = [
     path('register/', views.register, name='register'),
@@ -11,4 +12,9 @@ urlpatterns = [
     ), name='password_reset'),
     path('verify/<int:user_id>/', views.verify_email, name='verify_email'),
     path('login/', VerifiedLoginView.as_view(template_name='registration/login.html'), name='login'),
+]
+
+urlpatterns += [
+    path('user-list/', UserListView.as_view(), name='user_list'),
+    path('block-user/<int:user_id>/', toggle_block_user, name='block_user'),
 ]
