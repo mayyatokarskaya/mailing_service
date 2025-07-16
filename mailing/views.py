@@ -11,6 +11,9 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Recipient
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Message
+
 
 def send_mailing_view(request, mailing_id):
     mailing = Mailing.objects.get(id=mailing_id)
@@ -63,16 +66,28 @@ def home(request):
     })
 
 
-class RecipientListView(ListView):
+class RecipientListView(LoginRequiredMixin, ListView):
     model = Recipient
     template_name = 'mailing/recipient_list.html'
     context_object_name = 'recipients'
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.groups.filter(name='manager').exists() or user.is_superuser:
+            return Recipient.objects.all()
+        return Recipient.objects.filter(owner=user)
 
-class RecipientDetailView(DetailView):
+
+class RecipientDetailView(LoginRequiredMixin, DetailView):
     model = Recipient
     template_name = 'mailing/recipient_detail.html'
     context_object_name = 'recipient'
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.groups.filter(name='manager').exists() or user.is_superuser:
+            return Recipient.objects.all()
+        return Recipient.objects.filter(owner=user)
 
 
 class RecipientCreateView(CreateView):
@@ -81,18 +96,28 @@ class RecipientCreateView(CreateView):
     fields = ['email', 'full_name', 'comment']
     success_url = reverse_lazy('recipient_list')
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
 
-class RecipientUpdateView(UpdateView):
+
+class RecipientUpdateView(LoginRequiredMixin, UpdateView):
     model = Recipient
     template_name = 'mailing/recipient_form.html'
     fields = ['email', 'full_name', 'comment']
     success_url = reverse_lazy('recipient_list')
 
+    def get_queryset(self):
+        return Recipient.objects.filter(owner=self.request.user)
 
-class RecipientDeleteView(DeleteView):
+
+class RecipientDeleteView(LoginRequiredMixin, DeleteView):
     model = Recipient
     template_name = 'mailing/recipient_confirm_delete.html'
     success_url = reverse_lazy('recipient_list')
+
+    def get_queryset(self):
+        return Recipient.objects.filter(owner=self.request.user)
 
 
 class ManagerRecipientListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
@@ -121,6 +146,12 @@ class MailingDetailView(LoginRequiredMixin, DetailView):
     template_name = 'mailing/mailing_detail.html'
     context_object_name = 'mailing'
 
+    def get_queryset(self):
+        user = self.request.user
+        if user.groups.filter(name='manager').exists() or user.is_superuser:
+            return Mailing.objects.all()
+        return Mailing.objects.filter(owner=user)
+
 
 class MailingCreateView(LoginRequiredMixin, CreateView):
     model = Mailing
@@ -144,3 +175,6 @@ class MailingDeleteView(LoginRequiredMixin, OwnerRequiredMixin, DeleteView):
     model = Mailing
     template_name = 'mailing/mailing_confirm_delete.html'
     success_url = reverse_lazy('mailing_list')
+
+
+

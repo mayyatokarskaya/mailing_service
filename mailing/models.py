@@ -8,6 +8,11 @@ class Recipient(models.Model):
     full_name = models.CharField(max_length=255)
     comment = models.TextField(blank=True)
 
+    class Meta:
+        permissions = [
+            ('view_all_recipients', 'Can view all recipients'),
+        ]
+
     def __str__(self):
         return self.full_name
 
@@ -15,6 +20,11 @@ class Recipient(models.Model):
 class Message(models.Model):
     subject = models.CharField(max_length=255)
     body = models.TextField()
+
+    class Meta:
+        permissions = [
+            ('view_all_messages', 'Can view all messages'),
+        ]
 
     def __str__(self):
         return self.subject
@@ -26,6 +36,11 @@ class Mailing(models.Model):
         ("created", "Создана"),
         ("started", "Запущена"),
     ]
+
+    class Meta:
+        permissions = [
+            ('view_all_mailings', 'Can view all mailings'),
+        ]
 
     start_time = models.DateTimeField(verbose_name="Время начала")
     end_time = models.DateTimeField(verbose_name="Время окончания")
