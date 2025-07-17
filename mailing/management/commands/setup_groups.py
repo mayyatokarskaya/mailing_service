@@ -6,13 +6,13 @@ class Command(BaseCommand):
     help = 'Создает группу "Менеджеры" и назначает права'
 
     def handle(self, *args, **kwargs):
-        manager_group, created = Group.objects.get_or_create(name='manager')
+        manager_group, created = Group.objects.get_or_create(name="manager")
 
         permissions = Permission.objects.filter(
             codename__in=[
-                'view_all_mailings',
-                'view_all_recipients',
-                'view_all_messages',
+                "view_all_mailings",
+                "view_all_recipients",
+                "view_all_messages",
             ]
         )
         manager_group.permissions.set(permissions)
@@ -22,4 +22,3 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS('Группа "Менеджеры" создана'))
         else:
             self.stdout.write(self.style.WARNING('Группа "Менеджеры" уже существует'))
-

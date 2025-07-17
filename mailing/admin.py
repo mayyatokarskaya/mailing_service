@@ -73,8 +73,6 @@ class MailingAttemptAdmin(admin.ModelAdmin):
 
 
 def setup_groups():
-    manager_group, _ = Group.objects.get_or_create(name='Managers')
-    permissions = Permission.objects.filter(
-        codename__in=['view_mailing', 'view_recipient']
-    )
+    manager_group, _ = Group.objects.get_or_create(name="Managers")
+    permissions = Permission.objects.filter(codename__in=["view_mailing", "view_recipient"])
     manager_group.permissions.set(permissions)
