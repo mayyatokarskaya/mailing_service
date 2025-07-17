@@ -7,6 +7,7 @@ class Recipient(models.Model):
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=255)
     comment = models.TextField(blank=True)
+    owner = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE, related_name='recipients')
 
     class Meta:
         permissions = [
