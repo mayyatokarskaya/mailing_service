@@ -27,7 +27,7 @@ class Message(models.Model):
         'Mailing',
         on_delete=models.CASCADE,
         null=True, blank=True,
-        related_name='messages'  # добавлено related_name
+        related_name='messages'
     )
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -63,7 +63,7 @@ class Mailing(models.Model):
         "Message",
         on_delete=models.CASCADE,
         verbose_name="Сообщение",
-        related_name='mailings'  # добавлено related_name
+        related_name='mailings'
     )
     recipients = models.ManyToManyField("Recipient", verbose_name="Получатели")
     owner = models.ForeignKey(
