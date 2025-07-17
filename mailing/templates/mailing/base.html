@@ -11,8 +11,7 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'home' %}">Сервис рассылок</a>
         <div class="d-flex align-items-center gap-2">
-            <a class="btn btn-outline-primary" href="{% url 'recipient_list' %}">Получатели</a>
-            <a class="btn btn-outline-primary" href="{% url 'mailing_list' %}">Рассылки</a>
+
 
             {% if user.is_authenticated %}
                 <span class="ms-3">Привет, {{ user.username }}!</span>
@@ -20,6 +19,11 @@
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">Выйти</button>
                 </form>
+
+  <a href="{% url 'message_list' %}" class="btn btn-outline-primary">Сообщения</a>
+  <a href="{% url 'recipient_list' %}" class="btn btn-outline-primary">Получатели</a>
+  <a href="{% url 'mailing_list' %}" class="btn btn-outline-primary">Рассылки</a>
+
             {% else %}
                 <a class="btn btn-success ms-3" href="{% url 'login' %}">Войти</a>
                 <a class="btn btn-primary ms-2" href="{% url 'register' %}">Регистрация</a>

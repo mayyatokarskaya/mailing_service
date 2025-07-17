@@ -1,0 +1,15 @@
+{% extends 'mailing/base.html' %}
+
+{% block title %}{{ form.instance.pk|yesno:"Редактировать рассылку,Создать рассылку" }}{% endblock %}
+
+{% block content %}
+<h1>{{ form.instance.pk|yesno:"Редактировать рассылку,Создать рассылку" }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+
+<a href="{% url 'mailing_list' %}" class="btn btn-secondary">Назад к списку рассылок</a>
+{% endblock %}

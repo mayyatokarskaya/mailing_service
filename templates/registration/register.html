@@ -1,19 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>register</title>
-</head>
-<body>
-  {% extends 'mailing/base.html' %}
+{% extends 'mailing/base.html' %}
 
-  {% block content %}
-  <h2>Регистрация</h2>
-  <form method="post">
+{% block content %}
+<h2>Регистрация</h2>
+<form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Зарегистрироваться</button>
-  </form>
-  {% endblock %}
+</form>
+{% endblock %}
 </body>
 </html>

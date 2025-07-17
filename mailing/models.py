@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
@@ -21,6 +23,17 @@ class Recipient(models.Model):
 class Message(models.Model):
     subject = models.CharField(max_length=255)
     body = models.TextField()
+    mailing = models.ForeignKey(
+        'Mailing',
+        on_delete=models.CASCADE,
+        null=True, blank=True,
+        related_name='messages'  # добавлено related_name
+    )
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='messages'
+    )
 
     class Meta:
         permissions = [
@@ -46,9 +59,18 @@ class Mailing(models.Model):
     start_time = models.DateTimeField(verbose_name="Время начала")
     end_time = models.DateTimeField(verbose_name="Время окончания")
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="created", verbose_name="Статус")
-    message = models.ForeignKey("Message", on_delete=models.CASCADE, verbose_name="Сообщение")
+    message = models.ForeignKey(
+        "Message",
+        on_delete=models.CASCADE,
+        verbose_name="Сообщение",
+        related_name='mailings'  # добавлено related_name
+    )
     recipients = models.ManyToManyField("Recipient", verbose_name="Получатели")
-    owner = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE, related_name='mailings')
+    owner = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.CASCADE,
+        related_name='mailings'
+    )
 
     def __str__(self):
         return f"Рассылка {self.id} ({self.get_status_display()})"

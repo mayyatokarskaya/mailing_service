@@ -5,6 +5,8 @@
 {% block content %}
 <h1>Список рассылок</h1>
 
+<a href="{% url 'mailing_create' %}" class="btn btn-success mb-3">Создать рассылку</a>
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -23,6 +25,9 @@
             <td>{{ mailing.end_time }}</td>
             <td>{{ mailing.get_status_display }}</td>
             <td>
+                <a href="{% url 'mailing_detail' mailing.pk %}" class="btn btn-info btn-sm">Просмотр</a>
+                <a href="{% url 'mailing_update' mailing.pk %}" class="btn btn-warning btn-sm">Редактировать</a>
+                <a href="{% url 'mailing_delete' mailing.pk %}" class="btn btn-danger btn-sm">Удалить</a>
                 <a href="{% url 'send_mailing' mailing.id %}" class="btn btn-primary btn-sm">Отправить</a>
             </td>
         </tr>
