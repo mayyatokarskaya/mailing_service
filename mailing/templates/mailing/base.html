@@ -12,25 +12,26 @@
         <a class="navbar-brand" href="{% url 'home' %}">Сервис рассылок</a>
         <div class="d-flex align-items-center gap-2">
 
-
             {% if user.is_authenticated %}
-                <span class="ms-3">Привет, {{ user.username }}!</span>
-                <form action="{% url 'logout' %}" method="post" class="d-inline ms-2">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Выйти</button>
-                </form>
+            <span class="ms-3">Привет, {{ user.username }}!</span>
+            <a href="{% url 'message_list' %}" class="btn btn-outline-primary">Сообщения</a>
+            <a href="{% url 'recipient_list' %}" class="btn btn-outline-primary">Получатели</a>
+            <a href="{% url 'mailing_list' %}" class="btn btn-outline-primary">Рассылки</a>
+            <a href="{% url 'profile' %}" class="btn btn-outline-primary">Профиль</a>
 
-  <a href="{% url 'message_list' %}" class="btn btn-outline-primary">Сообщения</a>
-  <a href="{% url 'recipient_list' %}" class="btn btn-outline-primary">Получатели</a>
-  <a href="{% url 'mailing_list' %}" class="btn btn-outline-primary">Рассылки</a>
+            <form action="{% url 'logout' %}" method="post" class="d-inline ms-2">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Выйти</button>
+            </form>
 
             {% else %}
-                <a class="btn btn-success ms-3" href="{% url 'login' %}">Войти</a>
-                <a class="btn btn-primary ms-2" href="{% url 'register' %}">Регистрация</a>
+            <a class="btn btn-success ms-3" href="{% url 'login' %}">Войти</a>
+            <a class="btn btn-primary ms-2" href="{% url 'register' %}">Регистрация</a>
             {% endif %}
+
             {% if user.is_staff %}
-    <a class="btn btn-outline-warning ms-2" href="{% url 'manager_recipient_list' %}">Все получатели</a>
-{% endif %}
+            <a class="btn btn-outline-warning ms-2" href="{% url 'manager_recipient_list' %}">Все получатели</a>
+            {% endif %}
         </div>
     </div>
 </nav>
