@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.urls import path, include
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 from mailing import views
 from mailing.views import send_mailing_view, MailingAttemptListView, MailingReportView
 from mailing.views import home
@@ -29,4 +32,7 @@ urlpatterns = [
     path("attempts/", MailingAttemptListView.as_view(), name="attempt_list"),
     path("report/", MailingReportView.as_view(), name="mailing_report"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
