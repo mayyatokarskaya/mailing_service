@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from mailing import views
-from mailing.views import send_mailing_view, MailingAttemptListView
+from mailing.views import send_mailing_view, MailingAttemptListView, MailingReportView
 from mailing.views import home
 from mailing.views import (
     RecipientListView,
@@ -27,5 +27,6 @@ urlpatterns = [
     path("manager/recipients/", views.ManagerRecipientListView.as_view(), name="manager_recipient_list"),
     path("", include("mailing.urls")),
     path("attempts/", MailingAttemptListView.as_view(), name="attempt_list"),
+    path("report/", MailingReportView.as_view(), name="mailing_report"),
 ]
 

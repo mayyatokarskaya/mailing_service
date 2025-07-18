@@ -5,6 +5,8 @@ from django.views.decorators.cache import cache_page
 
 from mailing.models import Mailing, MailingAttempt
 from django.contrib import messages
+
+from . import models
 from .mixins import OwnerRequiredMixin
 
 from django.urls import reverse_lazy
@@ -12,6 +14,9 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Recipient
 
 from .models import Message
+
+from django.views.generic import TemplateView
+from django.db.models import Count, Q
 
 
 def send_mailing_view(request, mailing_id):
@@ -226,3 +231,27 @@ class MailingAttemptListView(LoginRequiredMixin, ListView):
         if self.request.user.is_staff:
             return MailingAttempt.objects.all()
         return MailingAttempt.objects.filter(mailing__owner=self.request.user)
+
+
+class MailingReportView(LoginRequiredMixin, TemplateView):
+    template_name = "mailing/mailing_report.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_mailings = Mailing.objects.filter(owner=self.request.user)
+
+        report = []
+        for mailing in user_mailings:
+            attempts = mailing.attempts.all()
+            success_count = attempts.filter(status="success").count()
+            failed_count = attempts.filter(status="failed").count()
+
+            report.append({
+                "mailing": mailing,
+                "success": success_count,
+                "failed": failed_count,
+                "total": attempts.count(),
+            })
+
+        context["report"] = report
+        return context
