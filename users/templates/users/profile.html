@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Профиль пользователя</h2>
+<ul>
+    <li>Почта: {{ user_profile.email }}</li>
+    <li>Имя пользователя: {{ user_profile.username }}</li>
+    <li>Имя: {{ user_profile.first_name }}</li>
+    <li>Фамилия: {{ user_profile.last_name }}</li>
+    <li>Телефон: {{ user_profile.phone_number }}</li>
+    <li>Страна: {{ user_profile.country }}</li>
+    <li>Аватар: {% if user_profile.avatar %}<img src="{{ user_profile.avatar.url }}" width="100">{% endif %}</li>
+</ul>
+
+<a href="{% url 'profile_edit' %}">Редактировать профиль</a>
+{% endblock %}

@@ -1,14 +1,17 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
-from django.views.generic import ListView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, UpdateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from .forms import CustomUserCreationForm
+from .forms import CustomUserChangeForm
 from .models import CustomUser
 
 
@@ -77,3 +80,22 @@ def toggle_block_user(request, user_id):
     messages.success(request, f'Пользователь {"заблокирован" if not user.is_active else "разблокирован"}.')
 
     return redirect("user_list")
+
+
+class ProfileDetailView(LoginRequiredMixin, DetailView):
+    model = CustomUser
+    template_name = 'users/profile.html'
+    context_object_name = 'user_profile'
+
+    def get_object(self):
+        return self.request.user
+
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = CustomUser
+    form_class = CustomUserChangeForm
+    template_name = 'users/profile_edit.html'
+    success_url = reverse_lazy('profile')
+
+    def get_object(self):
+        return self.request.user
