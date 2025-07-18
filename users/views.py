@@ -84,8 +84,8 @@ def toggle_block_user(request, user_id):
 
 class ProfileDetailView(LoginRequiredMixin, DetailView):
     model = CustomUser
-    template_name = 'users/profile.html'
-    context_object_name = 'user_profile'
+    template_name = "users/profile.html"
+    context_object_name = "user_profile"
 
     def get_object(self):
         return self.request.user
@@ -94,8 +94,8 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = CustomUser
     form_class = CustomUserChangeForm
-    template_name = 'users/profile_edit.html'
-    success_url = reverse_lazy('profile')
+    template_name = "users/profile_edit.html"
+    success_url = reverse_lazy("profile")
 
     def get_object(self):
         return self.request.user

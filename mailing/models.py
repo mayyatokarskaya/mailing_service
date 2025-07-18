@@ -112,7 +112,7 @@ class MailingAttempt(models.Model):
     attempt_time = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=7, choices=STATUS_CHOICES)
     server_response = models.TextField()
-    mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, related_name='attempts')
+    mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, related_name="attempts")
 
     def __str__(self):
         return f"Попытка {self.id} ({self.get_status_display()})"
