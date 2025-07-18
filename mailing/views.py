@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect, render
 from django.views.decorators.cache import cache_page
 
-from mailing.models import Mailing
+from mailing.models import Mailing, MailingAttempt
 from django.contrib import messages
 from .mixins import OwnerRequiredMixin
 
@@ -215,3 +215,14 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         return Message.objects.filter(owner=self.request.user)
+
+
+class MailingAttemptListView(LoginRequiredMixin, ListView):
+    model = MailingAttempt
+    template_name = "mailing/attempt_list.html"
+    context_object_name = "attempts"
+
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return MailingAttempt.objects.all()
+        return MailingAttempt.objects.filter(mailing__owner=self.request.user)

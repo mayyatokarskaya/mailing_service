@@ -13,11 +13,15 @@
         <div class="d-flex align-items-center gap-2">
 
             {% if user.is_authenticated %}
+
             <span class="ms-3">Привет, {{ user.username }}!</span>
             <a href="{% url 'message_list' %}" class="btn btn-outline-primary">Сообщения</a>
             <a href="{% url 'recipient_list' %}" class="btn btn-outline-primary">Получатели</a>
             <a href="{% url 'mailing_list' %}" class="btn btn-outline-primary">Рассылки</a>
             <a href="{% url 'profile' %}" class="btn btn-outline-primary">Профиль</a>
+
+                <a href="{% url 'attempt_list' %}"class="btn btn-outline-primary" >Попытки рассылок</a>
+
 
             <form action="{% url 'logout' %}" method="post" class="d-inline ms-2">
                 {% csrf_token %}
