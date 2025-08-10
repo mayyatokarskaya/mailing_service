@@ -6,7 +6,7 @@ authors = ["Mayya Tokarskaya <mayya.tokarskaya@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = "^3.12"
 django = "^5.2.4"
 python-dotenv = "^1.1.1"
 django-crispy-forms = "^2.4"

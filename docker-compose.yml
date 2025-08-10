@@ -17,9 +17,9 @@ services:
   db:
     image: postgres:15
     environment:
-      POSTGRES_DB: mailing_db
-      POSTGRES_USER: mailing_db_user
-      POSTGRES_PASSWORD: mailing_db_password
+      DB_NAME: mailing_db
+      DB_USER: mailing_db_user
+      DB_PASSWORD: mailing_db_password
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
