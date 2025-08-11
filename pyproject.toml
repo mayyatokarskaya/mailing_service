@@ -5,6 +5,11 @@ description = ""
 authors = ["Mayya Tokarskaya <mayya.tokarskaya@gmail.com>"]
 readme = "README.md"
 
+packages = [
+  { include = "mailing" },
+  { include = "users" }
+]
+
 [tool.poetry.dependencies]
 python = "^3.12"
 django = "^5.2.4"
@@ -16,6 +21,7 @@ redis = "^6.2.0"
 django-allauth = "^65.10.0"
 self = "^2020.12.3"
 pillow = "^11.3.0"
+django-celery-beat = "^2.8.1"
 
 [tool.poetry.group.lint.dependencies]
 flake8 = "^7.3.0"
@@ -41,3 +47,4 @@ exclude = '''
   | foo.py
 )
 '''
+
