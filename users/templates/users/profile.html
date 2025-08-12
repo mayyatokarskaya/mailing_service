@@ -1,0 +1,31 @@
+{% extends "mailing/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Профиль пользователя</h2>
+
+    <div class="card p-3 shadow-sm">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Почта:</strong> {{ user_profile.email }}</li>
+            <li class="list-group-item"><strong>Имя пользователя:</strong> {{ user_profile.username }}</li>
+            <li class="list-group-item"><strong>Имя:</strong> {{ user_profile.first_name }}</li>
+            <li class="list-group-item"><strong>Фамилия:</strong> {{ user_profile.last_name }}</li>
+            <li class="list-group-item"><strong>Телефон:</strong> {{ user_profile.phone_number }}</li>
+            <li class="list-group-item"><strong>Страна:</strong> {{ user_profile.country }}</li>
+            <li class="list-group-item">
+                <strong>Аватар:</strong>
+                {% if user_profile.avatar %}
+                    <br>
+                    <img src="{{ user_profile.avatar.url }}" class="img-thumbnail mt-2" style="max-width: 150px;">
+                {% else %}
+                    <span class="text-muted">Не загружен</span>
+                {% endif %}
+            </li>
+        </ul>
+
+        <div class="mt-3">
+            <a href="{% url 'profile_edit' %}" class="btn btn-primary">Редактировать профиль</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

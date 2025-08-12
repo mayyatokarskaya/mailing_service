@@ -1,0 +1,11 @@
+{% extends 'mailing/base.html' %}
+
+{% block title %}Детали сообщения{% endblock %}
+
+{% block content %}
+<h1>Тема: {{ message.subject }}</h1>
+
+<p>{{ message.body }}</p>
+
+<a href="{% url 'message_list' %}" class="btn btn-secondary">Назад к списку</a>
+{% endblock %}

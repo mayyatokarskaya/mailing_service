@@ -1,6 +1,10 @@
 # Python
 __pycache__/
 *.py[cod]
+media/
+staticfiles/
+celerybeat-schedule
+celerybeat.pid
 *.so
 .Python
 build/

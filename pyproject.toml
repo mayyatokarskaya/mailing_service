@@ -5,39 +5,46 @@ description = ""
 authors = ["Mayya Tokarskaya <mayya.tokarskaya@gmail.com>"]
 readme = "README.md"
 
+packages = [
+  { include = "mailing" },
+  { include = "users" }
+]
+
 [tool.poetry.dependencies]
-python = "^3.13"
+python = "^3.12"
 django = "^5.2.4"
 python-dotenv = "^1.1.1"
 django-crispy-forms = "^2.4"
 celery = "^5.5.3"
-
+psycopg2-binary = "^2.9.10"
+redis = "^6.2.0"
+django-allauth = "^65.10.0"
+self = "^2020.12.3"
+pillow = "^11.3.0"
+django-celery-beat = "^2.8.1"
 
 [tool.poetry.group.lint.dependencies]
 flake8 = "^7.3.0"
 black = "^25.1.0"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-
 [tool.black]
-# Максимальная длина строки
 line-length = 119
-# Файлы, которые не нужно форматировать
 exclude = '''
 (
   /(
-      \.eggs         # Исключить несколько общих каталогов
-    | \.git          # в корне проекта
+      \.eggs
+    | \.git
     | \.hg
     | \.mypy_cache
     | \.tox
     | \.venv
     | dist
   )/
-  | foo.py           # Также отдельно исключить файл с именем foo.py
-                     # в корне проекта
+  | foo.py
 )
 '''
+

@@ -1,0 +1,16 @@
+{% extends 'mailing/base.html' %}
+
+{% block title %}Детали получателя{% endblock %}
+
+{% block content %}
+<h1>Данные получателя</h1>
+
+<ul class="list-group mb-3">
+    <li class="list-group-item"><strong>ФИО:</strong> {{ recipient.full_name }}</li>
+    <li class="list-group-item"><strong>Email:</strong> {{ recipient.email }}</li>
+    <li class="list-group-item"><strong>Комментарий:</strong> {{ recipient.comment }}</li>
+</ul>
+
+<a href="{% url 'recipient_update' recipient.id %}" class="btn btn-warning">Редактировать</a>
+<a href="{% url 'recipient_list' %}" class="btn btn-secondary">Назад к списку</a>
+{% endblock %}

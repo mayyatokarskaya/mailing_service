@@ -1,0 +1,36 @@
+{% extends "mailing/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Отчёт по вашим рассылкам</h2>
+
+    {% if report %}
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>ID рассылки</th>
+                    <th>Статус рассылки</th>
+                    <th>Количество получателей</th>
+                    <th>Успешно отправлено</th>
+                    <th>Не удалось отправить</th>
+                    <th>Всего попыток</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in report %}
+                <tr>
+                    <td>{{ item.mailing.id }}</td>
+                    <td>{{ item.mailing.get_status_display }}</td>
+                    <td>{{ item.mailing.recipients.count }}</td>
+                    <td>{{ item.success }}</td>
+                    <td>{{ item.failed }}</td>
+                    <td>{{ item.total }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>У вас нет созданных рассылок.</p>
+    {% endif %}
+</div>
+{% endblock %}

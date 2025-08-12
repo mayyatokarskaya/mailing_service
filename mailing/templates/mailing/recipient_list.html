@@ -1,0 +1,34 @@
+{% extends 'mailing/base.html' %}
+
+{% block title %}Список получателей{% endblock %}
+
+{% block content %}
+<h1>Список получателей</h1>
+
+<a href="{% url 'recipient_create' %}" class="btn btn-primary mb-3">Добавить получателя</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ФИО</th>
+            <th>Email</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for recipient in recipients %}
+        <tr>
+            <td>{{ recipient.full_name }}</td>
+            <td>{{ recipient.email }}</td>
+            <td>
+                <a href="{% url 'recipient_detail' recipient.id %}" class="btn btn-info btn-sm">Подробнее</a>
+                <a href="{% url 'recipient_update' recipient.id %}" class="btn btn-warning btn-sm">Редактировать</a>
+                <a href="{% url 'recipient_delete' recipient.id %}" class="btn btn-danger btn-sm">Удалить</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'home' %}" class="btn btn-secondary">На главную</a>
+{% endblock %}
